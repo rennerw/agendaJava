@@ -1,0 +1,1 @@
+USE O ARQUIVO contatos.sql COMO BASE DE DADOS 
