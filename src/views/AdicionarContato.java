@@ -304,12 +304,15 @@ public class AdicionarContato extends javax.swing.JFrame {
             this.getData();
             if (rdbPF.isSelected()){
                 ContatoDAO.novoContato(pf);
+                
             }
             else if (rdbPJ.isSelected()){
                 ContatoDAO.novoContato(pj);
+                
             }
             else if (rdbPM.isSelected()){
                 ContatoDAO.novoContato(pm);
+                
             }
         }
     }//GEN-LAST:event_btnConfMouseClicked

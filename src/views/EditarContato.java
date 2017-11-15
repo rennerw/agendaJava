@@ -33,6 +33,7 @@ public class EditarContato extends javax.swing.JFrame {
     ArrayList<PessoaFisica> lstPF = new ArrayList();
     ArrayList<PessoaJuridica> lstPJ = new ArrayList();
     ArrayList<PessoaMarciana> lstPM = new ArrayList();
+    
     private static String tipoContato;
     public EditarContato(int i) {
         initComponents();
