@@ -3,12 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/welli/Documents/NetBeansProjects/JavaApplication4/src/views/Principal.java</file>
-            <file>file:/C:/Users/welli/Documents/NetBeansProjects/JavaApplication4/src/views/AdicionarContato.java</file>
-            <file>file:/C:/Users/welli/Documents/NetBeansProjects/JavaApplication4/src/views/EditarContato.java</file>
-            <file>file:/C:/Users/welli/Documents/NetBeansProjects/JavaApplication4/src/views/JavaApplication4.java</file>
-            <file>file:/C:/Users/welli/Documents/NetBeansProjects/JavaApplication4/src/model/PessoaJuridica.java</file>
-            <file>file:/C:/Users/welli/Documents/NetBeansProjects/JavaApplication4/src/dao/ContatoDAO.java</file>
+            <file>file:/D:/Games/agendaJava-master/src/views/Principal.java</file>
+            <file>file:/D:/Games/agendaJava-master/src/views/AdicionarContato.java</file>
+            <file>file:/D:/Games/agendaJava-master/src/dao/ContatoDAO.java</file>
+            <file>file:/D:/Games/agendaJava-master/src/views/EditarContato.java</file>
         </group>
     </open-files>
 </project-private>

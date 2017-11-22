@@ -8,6 +8,8 @@ package views;
 import dao.ContatoDAO;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.QUESTION_MESSAGE;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -350,17 +352,17 @@ public class Principal extends javax.swing.JFrame {
             int n;
             n = Integer.parseInt(modelo.getValueAt(linha, 0).toString());
             EditarContato e = new EditarContato(n);
-            txtPequisar.setText(Integer.toString(n));
+            //txtPequisar.setText(Integer.toString(n));
             e.setVisible(true);
         }
     }//GEN-LAST:event_tabelaContatosMouseClicked
 
     private void tabelaContatosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tabelaContatosKeyPressed
         if (evt.getKeyCode() == 127){
-            Object[] opc = { "Confirmar", "Cancelar" };
-            JOptionPane.showOptionDialog(null, "Apgar o contato para sempre?", "Warning",
-            JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE,null, opc, opc[0]);
-            if (JOptionPane.YES_OPTION == 0){
+            //Object[] opc = { "Confirmar", "Cancelar" };
+            int i =   JOptionPane.showConfirmDialog(this, "Apagar contato para sempre?", "ATENÇÃO!", YES_NO_OPTION, QUESTION_MESSAGE);
+            
+            if (JOptionPane.YES_OPTION == i){
                 JTable modelo = (JTable) tabelaContatos;
                 int linha = modelo.getSelectedRow();
                 int n;
@@ -368,6 +370,9 @@ public class Principal extends javax.swing.JFrame {
                 ContatoDAO.deletarContato(n);
                 this.limparLista();
                 this.carregarLista();
+            }
+            else{
+                System.out.println("nada");
             }
             
         }
@@ -388,30 +393,69 @@ public class Principal extends javax.swing.JFrame {
             this.carregarLista();
         }
         else{
-        ContatoDAO.buscarNome(txtPequisar.getText(), lstPF, lstPJ, lstPM);
-        for (int i = 0; i < lstPJ.size(); i++){
-                modelo.addRow(new Object[]{
-                Integer.toString(lstPJ.get(i).getId()),
-                lstPJ.get(i).getNome(),
-                lstPJ.get(i).getTelefone()
-                });
-                
-            }
-            for (int i = 0; i < lstPF.size(); i++){
-                modelo.addRow(new Object[]{
-                Integer.toString(lstPF.get(i).getId()),
-                lstPF.get(i).getNome(),
-                lstPF.get(i).getTelefone()
-                });
-            }
-            for (int i = 0; i < lstPM.size(); i++){
-                modelo.addRow(new Object[]{
-                Integer.toString(lstPM.get(i).getId()),
-                lstPM.get(i).getNome(),
-                lstPM.get(i).getTelefone()
-                });
-            }
+        limparLista();
+        ContatoDAO.buscarNome(txtPequisar.getText(), lstPF, lstPJ, lstPM, "all");
+        if (rdbAll.isSelected()){
             
+            for (int i = 0; i < lstPJ.size(); i++){
+                    modelo.addRow(new Object[]{
+                    Integer.toString(lstPJ.get(i).getId()),
+                    lstPJ.get(i).getNome(),
+                    lstPJ.get(i).getTelefone()
+                    });
+
+                }
+                for (int i = 0; i < lstPF.size(); i++){
+                    modelo.addRow(new Object[]{
+                    Integer.toString(lstPF.get(i).getId()),
+                    lstPF.get(i).getNome(),
+                    lstPF.get(i).getTelefone()
+                    });
+                }
+                for (int i = 0; i < lstPM.size(); i++){
+                    modelo.addRow(new Object[]{
+                    Integer.toString(lstPM.get(i).getId()),
+                    lstPM.get(i).getNome(),
+                    lstPM.get(i).getTelefone()
+                    });
+                }
+        }
+        else if(rdbPF.isSelected()){
+            limparLista();
+            ContatoDAO.buscarNome(txtPequisar.getText(), lstPF, lstPJ, lstPM, "PF");
+            modelo.setNumRows(0);
+            for (int i = 0; i < lstPF.size(); i++){
+                    modelo.addRow(new Object[]{
+                    Integer.toString(lstPF.get(i).getId()),
+                    lstPF.get(i).getNome(),
+                    lstPF.get(i).getTelefone()
+                    });
+                }
+        }
+        else if(rdbPJ.isSelected()){
+            limparLista();
+            ContatoDAO.buscarNome(txtPequisar.getText(), lstPF, lstPJ, lstPM, "PJ");
+            
+            for (int i = 0; i < lstPJ.size(); i++){
+                    modelo.addRow(new Object[]{
+                    Integer.toString(lstPJ.get(i).getId()),
+                    lstPJ.get(i).getNome(),
+                    lstPJ.get(i).getTelefone()
+                    });
+                }
+        }
+        else if(rdbPM.isSelected()){
+            limparLista();
+            ContatoDAO.buscarNome(txtPequisar.getText(), lstPF, lstPJ, lstPM, "PM");
+            
+            for (int i = 0; i < lstPM.size(); i++){
+                    modelo.addRow(new Object[]{
+                    Integer.toString(lstPM.get(i).getId()),
+                    lstPM.get(i).getNome(),
+                    lstPM.get(i).getTelefone()
+                    });
+                }
+        } 
         }
         
     }//GEN-LAST:event_btnPesquisarMouseClicked

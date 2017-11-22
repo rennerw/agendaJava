@@ -36,7 +36,7 @@ create table pm(
     telefone varchar(15) unique,
     email varchar(60),
     doc1 varchar(1),
-    doc2 varchar(20)
+    doc2 varchar(30)
 );
 
 drop table if exists distribuidorID;

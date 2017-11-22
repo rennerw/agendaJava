@@ -33,7 +33,6 @@ public class EditarContato extends javax.swing.JFrame {
     ArrayList<PessoaFisica> lstPF = new ArrayList();
     ArrayList<PessoaJuridica> lstPJ = new ArrayList();
     ArrayList<PessoaMarciana> lstPM = new ArrayList();
-    
     private static String tipoContato;
     public EditarContato(int i) {
         initComponents();
@@ -56,6 +55,7 @@ public class EditarContato extends javax.swing.JFrame {
         tipoContato = ContatoDAO.mostrarContato(idContato, lstPF, lstPJ, lstPM); 
         
         if (tipoContato.equals("Fisica")){
+            rdbPF.setSelected(true);
             txtNome.setBorder(BorderFactory.createTitledBorder("Nome"));
             txtSobrenome.setBorder(BorderFactory.createTitledBorder("Sobrenome"));
             txtReg1.setBorder(BorderFactory.createTitledBorder("CPF"));
@@ -67,12 +67,14 @@ public class EditarContato extends javax.swing.JFrame {
             txtEmail.setText(lstPF.get(0).getEmail());
             txtTelefone.setText(lstPF.get(0).getTelefone());
             txtEndereco.setText(lstPF.get(0).getEndereco());
+            
         }
         else if (tipoContato.equals("Juridica")){
+            rdbPJ.setSelected(true);
             txtNome.setBorder(BorderFactory.createTitledBorder("Nome Fantasia"));
             txtSobrenome.setBorder(BorderFactory.createTitledBorder("Razão Social"));
             txtReg1.setBorder(BorderFactory.createTitledBorder("CNPJ"));
-            txtReg2.setBorder(BorderFactory.createTitledBorder("Razao Social"));
+            txtReg2.setBorder(BorderFactory.createTitledBorder("Inscricao Estadual"));
             txtNome.setText(lstPJ.get(0).getNome());
             txtSobrenome.setText(lstPJ.get(0).getRazaoSocial());
             txtReg1.setText(lstPJ.get(0).getCnpj());
@@ -82,9 +84,10 @@ public class EditarContato extends javax.swing.JFrame {
             txtEndereco.setText(lstPJ.get(0).getEndereco());
         }
         else if (tipoContato.equals("Marciana")){
+            rdbPM.setSelected(true);
             txtNome.setBorder(BorderFactory.createTitledBorder("Nome"));
             txtSobrenome.setBorder(BorderFactory.createTitledBorder("Ki (xxx)"));
-            txtReg1.setBorder(BorderFactory.createTitledBorder("Numero de antenas"));
+            txtReg1.setBorder(BorderFactory.createTitledBorder("Numero de antenas(x)"));
             txtReg2.setBorder(BorderFactory.createTitledBorder("Registro Intergalatico"));
             txtNome.setText(lstPM.get(0).getNome());
             txtSobrenome.setText(lstPM.get(0).getKi());
@@ -129,8 +132,18 @@ public class EditarContato extends javax.swing.JFrame {
         });
 
         txtReg1.setBorder(javax.swing.BorderFactory.createTitledBorder("CPF"));
+        txtReg1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtReg1KeyTyped(evt);
+            }
+        });
 
         txtReg2.setBorder(javax.swing.BorderFactory.createTitledBorder("RG"));
+        txtReg2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtReg2KeyTyped(evt);
+            }
+        });
 
         jLabel1.setText("Tipo de contato: ");
 
@@ -188,14 +201,39 @@ public class EditarContato extends javax.swing.JFrame {
                 txtNomeActionPerformed(evt);
             }
         });
+        txtNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNomeKeyTyped(evt);
+            }
+        });
 
         txtSobrenome.setBorder(javax.swing.BorderFactory.createTitledBorder("Sobrenome"));
+        txtSobrenome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtSobrenomeKeyTyped(evt);
+            }
+        });
 
         txtEndereco.setBorder(javax.swing.BorderFactory.createTitledBorder("Endereco"));
+        txtEndereco.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtEnderecoKeyTyped(evt);
+            }
+        });
 
         txtTelefone.setBorder(javax.swing.BorderFactory.createTitledBorder("Telefone (xxxx-xxxx)"));
+        txtTelefone.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtTelefoneKeyTyped(evt);
+            }
+        });
 
         txtEmail.setBorder(javax.swing.BorderFactory.createTitledBorder("Email"));
+        txtEmail.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtEmailKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -275,9 +313,11 @@ public class EditarContato extends javax.swing.JFrame {
     
     private void btnConfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfMouseClicked
         
+        
+        if (verifyData() == false){
         ContatoDAO.atualizarContato(idContato, txtNome.getText(), txtSobrenome.getText(), txtEndereco.getText(),
                 txtTelefone.getText(), txtEmail.getText(), txtReg1.getText(), txtReg2.getText());
-        
+        }
         
     }//GEN-LAST:event_btnConfMouseClicked
 
@@ -324,6 +364,94 @@ public class EditarContato extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowActivated
 
+    private void txtNomeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyTyped
+        int maxLengt = 60;
+        if (txtNome.getText().length() > maxLengt-1){
+            evt.consume();
+            //JOptionPane.showMessageDialog(null, "Nome muito grande. Apenas 60 caracteres");
+        }
+    }//GEN-LAST:event_txtNomeKeyTyped
+
+    private void txtSobrenomeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSobrenomeKeyTyped
+        int maxLengt = 60;
+        if (rdbPM.isSelected() && txtSobrenome.getText().length() > 3){
+            evt.consume();
+        }
+        else if (txtSobrenome.getText().length() == maxLengt){
+            evt.consume();
+            //JOptionPane.showMessageDialog(null, "Nome muito grande. Apenas 60 caracteres");
+        }
+    }//GEN-LAST:event_txtSobrenomeKeyTyped
+
+    private void txtEnderecoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEnderecoKeyTyped
+        int maxLengt = 60;
+        if (txtEndereco.getText().length() == maxLengt){
+            evt.consume();
+            //JOptionPane.showMessageDialog(null, "Nome muito grande. Apenas 60 caracteres");
+        }
+    }//GEN-LAST:event_txtEnderecoKeyTyped
+
+    private void txtTelefoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefoneKeyTyped
+        int maxLengt = 13;
+        if (txtTelefone.getText().length() == maxLengt){
+            evt.consume();
+            //JOptionPane.showMessageDialog(null, "Nome muito grande. Apenas 60 caracteres");
+        }
+    }//GEN-LAST:event_txtTelefoneKeyTyped
+
+    private void txtEmailKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEmailKeyTyped
+        int maxLengt = 60;
+        if (txtEmail.getText().length() == maxLengt){
+            evt.consume();
+            //JOptionPane.showMessageDialog(null, "Nome muito grande. Apenas 60 caracteres");
+        }
+    }//GEN-LAST:event_txtEmailKeyTyped
+
+    private void txtReg1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtReg1KeyTyped
+        int maxLenght = 30;
+        if (txtReg1.getText().length() > 0 && rdbPM.isSelected()){
+            evt.consume();
+        }
+        else if (txtReg1.getText().length() == maxLenght){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtReg1KeyTyped
+
+    private void txtReg2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtReg2KeyTyped
+        int maxLenght = 30;
+
+        if (txtReg2.getText().length() == maxLenght){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtReg2KeyTyped
+    
+    private boolean verifyData(){
+        if (txtNome.getText().length() < 3){ JOptionPane.showMessageDialog(null, "Nome muito curto"); return true;}
+        else if (txtNome.getText().length() > 60) {JOptionPane.showMessageDialog(null, "Nome muito grande"); return true;}
+        
+        if (txtSobrenome.getText().length() > 4 && rdbPM.isSelected()){JOptionPane.showMessageDialog(null, "IMPOSSÍVEL HAVER UM SER TANTO KI NO UNIVERSO!"); return true;}
+        else if (txtSobrenome.getText().length() < 3){ JOptionPane.showMessageDialog(null, "Sobrenome muito curto"); return true;}
+        else if (txtSobrenome.getText().length() > 60) {JOptionPane.showMessageDialog(null, "Nome muito grande"); return true;}
+        
+        if (txtTelefone.getText().length() < 8){ JOptionPane.showMessageDialog(null, "Telefone muito curto"); return true;}
+        else if (txtSobrenome.getText().length() > 15) {JOptionPane.showMessageDialog(null, "Nome muito grande"); return true;}
+        
+        if (txtEmail.getText().isEmpty()){ JOptionPane.showMessageDialog(null, "Email muito curto"); return true;}
+        else if (txtEmail.getText().length() > 60){JOptionPane.showMessageDialog(null, "Email muito grande"); return true;}
+        
+        if (txtEndereco.getText().isEmpty()){ JOptionPane.showMessageDialog(null, "Endereco muito curto"); return true;}
+        else if (txtEndereco.getText().length() > 60){JOptionPane.showMessageDialog(null, "Endereço muito grande"); return true;}
+        
+        if (txtReg1.getText().isEmpty()){ JOptionPane.showMessageDialog(null, "Campo de documento muito curto"); return true;}
+        else if (txtReg1.getText().length() > 1 && rdbPM.isSelected()) {JOptionPane.showMessageDialog(null, "Não há marcianos com tudo isso de antenas"); return true;}
+        else if (txtReg1.getText().length() > 30) {JOptionPane.showMessageDialog(null, "Campo de documento muito curto"); return true;}
+        
+        if (txtReg2.getText().isEmpty()){ JOptionPane.showMessageDialog(null, "Campo de documento muito curto"); return true;}
+        else if (txtReg1.getText().length() > 30) {JOptionPane.showMessageDialog(null, "Campo de documento muito curto"); return true;}
+        
+        return false;
+    }
+    
     /**
      * @param args the command line arguments
      */

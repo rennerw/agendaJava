@@ -48,7 +48,7 @@ public class ContatoDAO {
             JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
         }
         catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Marcianos farão o desenvolvedor pagar por esse erro!"+ex);
+            JOptionPane.showMessageDialog(null, "Algo deu errado e marcianos farão o desenvolvedor pagar por isso. \nErro: "+ex.getErrorCode());
         }finally{
             ConnectionFactory.closeConnection(con, stmt);
         }
@@ -75,7 +75,7 @@ public class ContatoDAO {
             JOptionPane.showMessageDialog(null, "Salvo com sucesso!");
         }
         catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Marcianos farão o desenvolvedor pagar por esse erro!"+ex);
+            JOptionPane.showMessageDialog(null, "Algo deu errado e marcianos farão o desenvolvedor pagar por isso. \nErro: "+ex.getErrorCode());
         }finally{
             ConnectionFactory.closeConnection(con, stmt);
         }
@@ -103,7 +103,7 @@ public class ContatoDAO {
         }
         catch (SQLException ex) {
             if (ex.getErrorCode() == 1406) JOptionPane.showMessageDialog(null, "O campo é muito grande");
-            else JOptionPane.showMessageDialog(null, "Marcianos farão o desenvolvedor pagar por esse erro!"+ex);
+            else JOptionPane.showMessageDialog(null, "Algo deu errado e marcianos farão o desenvolvedor pagar por isso. \nErro: "+ex.getErrorCode());
         }finally{
             ConnectionFactory.closeConnection(con, stmt);
         }
@@ -147,7 +147,7 @@ public class ContatoDAO {
             } 
             catch (SQLException ex) {
                 if (ex.getErrorCode() == 1406) JOptionPane.showMessageDialog(null, "O campo é muito grande");
-                else JOptionPane.showMessageDialog(null, "Marcianos farão o desenvolvedor pagar por esse erro!"+ex);
+                else JOptionPane.showMessageDialog(null, "Algo deu errado e marcianos farão o desenvolvedor pagar por isso. \nErro: "+ex.getErrorCode());
             }
             finally{
                 ConnectionFactory.closeConnection(con, stmt, rs);
@@ -170,7 +170,7 @@ public class ContatoDAO {
             }
             catch (SQLException ex) {
                 if (ex.getErrorCode() == 1406) JOptionPane.showMessageDialog(null, "O campo é muito grande");
-                else JOptionPane.showMessageDialog(null, "Marcianos farão o desenvolvedor pagar por esse erro!"+ex);
+                else JOptionPane.showMessageDialog(null, "Algo deu errado e marcianos farão o desenvolvedor pagar por isso. \nErro: "+ex.getErrorCode());
             }
             finally{
                 ConnectionFactory.closeConnection(con, stmt, rs);
@@ -193,7 +193,7 @@ public class ContatoDAO {
             }
             catch (SQLException ex) {
                 if (ex.getErrorCode() == 1406) JOptionPane.showMessageDialog(null, "O campo é muito grande");
-                else JOptionPane.showMessageDialog(null, "Marcianos farão o desenvolvedor pagar por esse erro!"+ex);
+                else JOptionPane.showMessageDialog(null, "Algo deu errado e marcianos farão o desenvolvedor pagar por isso. \nErro: "+ex.getErrorCode());
             }
             finally{
                 ConnectionFactory.closeConnection(con, stmt, rs);
@@ -216,7 +216,7 @@ public class ContatoDAO {
             }
             catch (SQLException ex) {
                 if (ex.getErrorCode() == 1406) JOptionPane.showMessageDialog(null, "O campo é muito grande");
-                else JOptionPane.showMessageDialog(null, "Marcianos farão o desenvolvedor pagar por esse erro!"+ex);
+                else JOptionPane.showMessageDialog(null, "Algo deu errado e marcianos farão o desenvolvedor pagar por isso. \nErro: "+ex.getErrorCode());
             }
             finally{
                 ConnectionFactory.closeConnection(con, stmt, rs);
@@ -288,7 +288,7 @@ public class ContatoDAO {
         }
             catch (SQLException ex) {
                 if (ex.getErrorCode() == 1406) JOptionPane.showMessageDialog(null, "O campo é muito grande");
-                else JOptionPane.showMessageDialog(null, "Marcianos farão o desenvolvedor pagar por esse erro!"+ex);
+                else JOptionPane.showMessageDialog(null, "Algo deu errado e marcianos farão o desenvolvedor pagar por isso. \nErro: "+ex.getErrorCode());
             }
             finally{
                 ConnectionFactory.closeConnection(con, stmt, rs);
@@ -350,7 +350,7 @@ public class ContatoDAO {
         }
             catch (SQLException ex) {
                 if (ex.getErrorCode() == 1406) JOptionPane.showMessageDialog(null, "O campo é muito grande");
-                else JOptionPane.showMessageDialog(null, "Marcianos farão o desenvolvedor pagar por esse erro!\n"+ex);
+                else JOptionPane.showMessageDialog(null, "Marcianos farão o desenvolvedor pagar por isso\nErro: "+ex.getErrorCode());
             }
             finally{
                 ConnectionFactory.closeConnection(con, stmt, rs);
@@ -390,21 +390,23 @@ public class ContatoDAO {
         }
             catch (SQLException ex) {
                 if (ex.getErrorCode() == 1406) JOptionPane.showMessageDialog(null, "O campo é muito grande");
-                else JOptionPane.showMessageDialog(null, "Marcianos farão o desenvolvedor pagar por esse erro!\n"+ex);
+                else JOptionPane.showMessageDialog(null, "Algo deu errado\nMarcianos farão o desenvolvedor pagar por esse erro!\n");
             }
             finally{
                 ConnectionFactory.closeConnection(con, stmt, rs);
             }
     }
     
-    public static void buscarNome(String nome, ArrayList lstpf, ArrayList lstpj, ArrayList lstpm){
+    public static void buscarNome(String nome, ArrayList lstpf, ArrayList lstpj, ArrayList lstpm, String tipo){
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
+        if (tipo.equals("all")){
             try {
-                String sql = "SELECT * FROM verTodos where nome like ?";
+                String sql = "SELECT * FROM verTodos where nome like ? or sobrenome like ?";
    		stmt = con.prepareStatement(sql);
    		stmt.setString(1, "%"+nome+"%");
+                stmt.setString(2, "%"+nome+"%");
                 rs = stmt.executeQuery();
                 
                 while (rs.next()){
@@ -436,10 +438,83 @@ public class ContatoDAO {
             } 
             catch (SQLException ex) {
                 if (ex.getErrorCode() == 1406) JOptionPane.showMessageDialog(null, "O campo é muito grande");
-                else JOptionPane.showMessageDialog(null, "Marcianos farão o desenvolvedor pagar por esse erro!"+ex);
+                else JOptionPane.showMessageDialog(null, "Marcianos farão o desenvolvedor pagar por isso\nErro: "+ex.getErrorCode());
             }
             finally{
                 ConnectionFactory.closeConnection(con, stmt, rs);
             }
+        }
+        if (tipo.equals("PF")){
+            try {
+                String sql = "SELECT * FROM pf where nome like ?";
+   		stmt = con.prepareStatement(sql);
+   		stmt.setString(1, "%"+nome+"%");
+                rs = stmt.executeQuery();
+                
+                while (rs.next()){
+                        PessoaFisica pf = new PessoaFisica(rs.getInt("id"), rs.getString("email"), rs.getString("telefone"), rs.getString("endereco"));
+                        pf.setNome(rs.getString("nome"));
+                        pf.setSobrenome(rs.getString("sobrenome"));
+                        pf.setCpf(rs.getString("doc1"));
+                        pf.setRg(rs.getString("doc2"));
+                        lstpf.add(pf);
+                }
+            } 
+            catch (SQLException ex) {
+                if (ex.getErrorCode() == 1406) JOptionPane.showMessageDialog(null, "O campo é muito grande");
+                else JOptionPane.showMessageDialog(null, "Marcianos farão o desenvolvedor pagar por isso\nErro: "+ex.getErrorCode());
+            }
+            finally{
+                ConnectionFactory.closeConnection(con, stmt, rs);
+            }
+        }
+        if (tipo.equals("PJ")){
+            try {
+                String sql = "SELECT * FROM pj where nome like ?";
+   		stmt = con.prepareStatement(sql);
+   		stmt.setString(1, "%"+nome+"%");
+                rs = stmt.executeQuery();
+                
+                while (rs.next()){
+                        PessoaJuridica pj = new PessoaJuridica(rs.getInt("id"), rs.getString("email"), rs.getString("telefone"), rs.getString("endereco"));
+                        pj.setNome(rs.getString("nome"));
+                        pj.setRazaoSocial(rs.getString("sobrenome"));
+                        pj.setCnpj(rs.getString("doc1"));
+                        pj.setInsc(rs.getString("doc2"));
+                        lstpf.add(pj);
+                }
+            } 
+            catch (SQLException ex) {
+                if (ex.getErrorCode() == 1406) JOptionPane.showMessageDialog(null, "O campo é muito grande");
+                else JOptionPane.showMessageDialog(null, "Marcianos farão o desenvolvedor pagar por isso\nErro: "+ex.getErrorCode());
+            }
+            finally{
+                ConnectionFactory.closeConnection(con, stmt, rs);
+            }
+        }
+        if (tipo.equals("PM")){
+            try {
+                String sql = "SELECT * FROM pm where nome like ?";
+   		stmt = con.prepareStatement(sql);
+   		stmt.setString(1, "%"+nome+"%");
+                rs = stmt.executeQuery();
+                
+                while (rs.next()){
+                        PessoaMarciana pm = new PessoaMarciana(rs.getInt("id"), rs.getString("email"), rs.getString("telefone"), rs.getString("endereco"));
+                        pm.setNome(rs.getString("nome"));
+                        pm.setKi(rs.getString("sobrenome"));
+                        pm.setNumeroAntenas(rs.getString("doc1"));
+                        pm.setInscricao(rs.getString("doc2"));
+                        lstpf.add(pm);
+                }
+            } 
+            catch (SQLException ex) {
+                if (ex.getErrorCode() == 1406) JOptionPane.showMessageDialog(null, "O campo é muito grande");
+                else JOptionPane.showMessageDialog(null, "Marcianos farão o desenvolvedor pagar por isso\nErro: "+ex.getErrorCode());
+            }
+            finally{
+                ConnectionFactory.closeConnection(con, stmt, rs);
+            }
+        }
         }
 }
